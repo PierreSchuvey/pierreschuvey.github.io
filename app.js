@@ -1,5 +1,5 @@
 document.querySelector('#start').addEventListener('click', function(e){
-  navigator.getUserMedia({
+  navigator.mediaDevices.getUserMedia({
     video:true,
     audio:true
   }, function (stream){
