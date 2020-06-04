@@ -4,7 +4,7 @@ document.querySelector('#start').addEventListener('click', function(e){
     audio:true
   }, function (stream){
     let emitterVideo = document.querySelector('#emitter-video')
-    emitterVideo.src = windows.URL.createObjectURL(stream)
+    emitterVideo.src = window.URL.createObjectURL(stream)
     emitterVideo.play()
   }, function(){})
 })
