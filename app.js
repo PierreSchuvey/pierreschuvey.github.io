@@ -38,8 +38,8 @@ function startPeer(initiator){
 }
 
 document.querySelector('#start').addEventListener('click', function(e){
-  startPeertion(true)
+  startPeer(true)
 })
 document.querySelector('#receive').addEventListener('click', function(e){
-  startPeertion(false)
+  startPeer(false)
 })
