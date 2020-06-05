@@ -3,7 +3,7 @@ var app = require('express')();
     io = require('socket.io').listen(server);
     ent = require('ent'); // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
 // Chargement de la page index.html
-app.get(__dirname +'/', function (req, res) {
+app.get(__dirname +'/index.html', function (req, res) {
   res.sendfile('index.html');
 });
 
