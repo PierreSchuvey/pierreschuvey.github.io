@@ -23,4 +23,4 @@ io.sockets.on('connection', function (socket, pseudo) {
     });
 });
 
-server..listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 5000);
