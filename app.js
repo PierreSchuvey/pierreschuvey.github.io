@@ -14,18 +14,21 @@ p.on('stream', function(stream){
   video.srcObject = stream
   video.play()
 })
-}
+
+
 document.querySelector('#incoming').addEventListener('submit', function (e){
   e.preventDefault()
   p.signal(JSON.parse(e.target.querySelector('textarea').value))
 })
+}
+
 function startPeer(initiator){
   navigator.getUserMedia({
     video:true,
     audio:true
   }, function (stream){
     let p = new SimplePeer({
-      initiator: true,
+      initiator: initiator,
       stream: stream,
       trickle: false
     })
