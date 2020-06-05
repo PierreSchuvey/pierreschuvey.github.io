@@ -36,6 +36,7 @@
             var pseudo = prompt('Quel est votre pseudo ?');
             socket.emit('nouveau_client', pseudo);
             document.title = pseudo + ' - ' + document.title;
+            console.log(pseudo);
 
             // Quand on reçoit un message, on l'insère dans la page
             socket.on('message', function(data) {
@@ -53,6 +54,7 @@
                 socket.emit('message', message); // Transmet le message aux autres
                 insereMessage(pseudo, message); // Affiche le message aussi sur notre page
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+                return false; // Permet de bloquer l'envoi "classique" du formulaire
             });
 
             // Ajoute un message dans la page
