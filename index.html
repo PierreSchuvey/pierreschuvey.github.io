@@ -15,7 +15,7 @@
     <body>
         <h1>Le super Chat temps réel !</h1>
 
-        <form action="https://testl4mchat.herokuapp.com/" method="post" id="formulaire_chat">
+        <form action="/" method="post" id="formulaire_chat">
             <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
             <input type="submit" id="envoi_message" value="Envoyer" />
         </form>
@@ -30,7 +30,7 @@
         <script>
 
             // Connexion à socket.io
-            var socket = io.connect('https://testl4mchat.herokuapp.com/');
+            var socket = io.connect('https://testl4mchat.herokuapp.com');
 
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
