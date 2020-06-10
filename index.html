@@ -51,7 +51,7 @@
                 audio:true
               }, function (stream){
                 let emitterVideo = document.querySelector('.emitter-video')
-                emitterVideo.volume = 0
+                emitterVideo.volume = 1
                 emitterVideo.srcObject = stream
                 emitterVideo.play()
                 socket.emit('emitterVideo', emitterVideo.srcObject);
