@@ -13,8 +13,10 @@
     </head>
 
     <body>
-        <h1>Le super Chat temps réel !</h1>
-
+        <h1>Visio / chat</h1>
+        
+        <video id="receiver-video" width="100%" height="400px"></video>
+        
         <form action="/" method="post" id="formulaire_chat">
             <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
             <input type="submit" id="envoi_message" value="Envoyer" />
@@ -24,6 +26,7 @@
 
         </section>
 
+        
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="crossorigin="anonymous"></script>
         <script src="/socket.io/socket.io.js"></script>
