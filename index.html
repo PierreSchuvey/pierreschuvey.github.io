@@ -13,10 +13,16 @@
     </head>
 
     <body>
-        <h1>Visio / chat</h1>
-        
-        <video id="receiver-video" width="100%" height="400px"></video>
-        
+        <h1>Le super Chat temps réel !</h1>
+
+
+
+        <video controls id="emitter-video" width="40%" height="400px"></video>
+        <video controls id="receiver-video" width="40%" height="400px"></video>
+        <p>
+          <button id="start">Démarrer la conversation</button>
+        </p>
+
         <form action="/" method="post" id="formulaire_chat">
             <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
             <input type="submit" id="envoi_message" value="Envoyer" />
@@ -26,14 +32,35 @@
 
         </section>
 
-        
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="crossorigin="anonymous"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
 
+        </script>
+        <script>
+
             // Connexion à socket.io
-            var socket = io.connect('https://testl4mchat.herokuapp.com');
+            var socket = io.connect('http://localhost:8080');
+
+
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+            function startPeer(initiator){
+              navigator.getUserMedia({
+                video:true,
+                audio:true
+              }, function (stream){
+                let emitterVideo = document.querySelector('.emitter-video')
+                emitterVideo.volume = 0
+                emitterVideo.srcObject = stream
+                emitterVideo.play()
+                socket.emit('emitterVideo', emitterVideo.srcObject);
+              }, function(){})
+            }
+
+            document.querySelector('#start').addEventListener('click', function(e){
+              startPeer(true)
+            })
 
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
@@ -43,6 +70,13 @@
             // Quand on reçoit un message, on l'insère dans la page
             socket.on('message', function(data) {
                 insereMessage(data.pseudo, data.message)
+            })
+
+            socket.on('videoemitter', function(data) {
+              let video = document.querySelector('#receiver-video')
+              video.volume = 0
+              video.srcObject = data
+              video.play()
             })
 
             // Quand un nouveau client se connecte, on affiche l'information
