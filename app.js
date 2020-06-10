@@ -21,6 +21,10 @@ io.sockets.on('connection', function (socket, pseudo) {
         message = ent.encode(message);
         socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
     });
+
+    socket.on('videoemitter', function (video) {
+        socket.broadcast.emit('videoemitter', {video: socket.video});
+    });
 });
 
 server.listen(process.env.PORT || 3000);
