@@ -1,19 +1,12 @@
 {
     "name": "super-chat",
     "version": "0.1.0",
-    
-    "private": true,
     "dependencies": {
+        "ent": "~0.1.0",
         "express": "~3.3.4",
         "socket.io": "~1.2.1",
-        "ent": "~0.1.0"
+        "webrtc.io": "0.0.4"
     },
-    "author": "Pierre <pierreschuvey@gmail.com>",
-    "description": "Un super Chat temps réel avec socket.io",
-    "scripts": {
-    "start": "node app.js"
-},
-  "engines": {
-    "node": "10.x"
-  }
+    "author": "Mateo21 <mateo21@email.com>",
+    "description": "Un super Chat temps réel avec socket.io"
 }

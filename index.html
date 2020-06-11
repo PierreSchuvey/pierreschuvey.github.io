@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <title>Super Chat temps réel !</title>
         <style>
             #zone_chat strong {
@@ -9,58 +10,124 @@
                 background-color: black;
                 padding: 2px;
             }
+            #incoming>.form-group>textarea, #offer{
+              display: none;
+            }
         </style>
     </head>
-
     <body>
         <h1>Le super Chat temps réel !</h1>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <h2>Réception</h2>
+              <video controls id="receiver-video" width="100%" height="400px"></video>
+              <p>
+                <button id="start" class="btn btn-primary">Démarrer la conversation</button>
+              </p>
+              <textarea id="offer" class="form-control"></textarea>
+            </div>
+            <div class="col-sm-6">
+              <h2>Envoi</h2>
+              <video controls id="emitter-video" width="100%" height="400px"></video>
+              <p>
+                <button id="receive" class="btn btn-default">Recevoir la conversation</button>
+              </p>
+              <form id="incoming">
+                <div class="form-group">
+                  <textarea class="form-control"></textarea>
+                </div>
+                <p>
+                  <button type="submit">Enregistrer l'offre</button>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <form action="/" method="post" id="formulaire_chat">
+                  <input type="text" name="message" id="message" placeholder="Votre message..." style="width:75%"  autofocus />
+                  <button type="submit" id="envoi_message" value="Envoyer"  class="btn btn-primary"> Envoyer</button>
+              </form>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col-12">
+              <section id="zone_chat">
 
-
-
-        <video controls id="emitter-video" width="40%" height="400px"></video>
-        <video controls id="receiver-video" width="40%" height="400px"></video>
-        <p>
-          <button id="start">Démarrer la conversation</button>
-        </p>
-
-        <form action="/" method="post" id="formulaire_chat">
-            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
-            <input type="submit" id="envoi_message" value="Envoyer" />
-        </form>
-
-        <section id="zone_chat">
-
-        </section>
+              </section>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="crossorigin="anonymous"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script>
-
-        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.7.2/simplepeer.min.js"></script>
         <script>
 
             // Connexion à socket.io
-            var socket = io.connect('https://testl4mchat.herokuapp.com/');
+            var socket = io.connect('http://localhost:8080');
 
 
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+
+            function bindEvents(p){
+            p.on('signal', function (data){
+              var offer = JSON.stringify(data);
+              socket.emit('offer',offer)
+
+            })
+
+            p.on('stream', function(stream){
+              let video = document.querySelector('#receiver-video')
+              video.volume = 0
+              video.srcObject = stream
+              video.play()
+            })
+
+            socket.on('offer', function(data) {
+              p.signal(JSON.parse(data.offer))
+            })
+
+            }
+
             function startPeer(initiator){
               navigator.getUserMedia({
                 video:true,
                 audio:true
               }, function (stream){
-                let emitterVideo = document.querySelector('#emitter-video')                
+                let p = new SimplePeer({
+                  initiator: initiator,
+                  stream: stream,
+                  trickle: false
+                })
+                bindEvents(p)
+                let emitterVideo = document.querySelector('#emitter-video')
                 emitterVideo.volume = 0
                 emitterVideo.srcObject = stream
                 emitterVideo.play()
-                socket.emit('emitterVideo', emitterVideo.srcObject);
               }, function(){})
             }
-
             document.querySelector('#start').addEventListener('click', function(e){
+              if(typeof p === 'undefined'){
               startPeer(true)
+              }else{
+              startPeer(false)
+              }
             })
+            document.querySelector('#receive').addEventListener('click', function(e){
+              console.log(initiator)
+            })
+
+
+
+
+
+
+
+
 
             // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
@@ -69,14 +136,7 @@
 
             // Quand on reçoit un message, on l'insère dans la page
             socket.on('message', function(data) {
-                insereMessage(data.pseudo, data.message)
-            })
-
-            socket.on('videoemitter', function(data) {
-              let video = document.querySelector('#receiver-video')
-              video.volume = 0
-              video.srcObject = data
-              video.play()
+                insereMessage(data.pseudo, data.message);
             })
 
             // Quand un nouveau client se connecte, on affiche l'information
