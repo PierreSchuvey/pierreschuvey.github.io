@@ -71,7 +71,7 @@
             var socket = io.connect('https://testl4mchat.herokuapp.com/');
 
 
-            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
             function bindEvents(p){
             p.on('signal', function (data){
