@@ -157,6 +157,19 @@
             function insereMessage(pseudo, message) {
                 $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
             }
+            
+            const configuration = {
+	iceServers: [
+		{
+			'url': 'stun:turn.l4m.fr:80',
+		},
+		{
+			'url': 'turn:turn.l4m.fr:80',
+			'username': "l4m",
+			'credential': "tj9d3h76j"
+		},
+	]
+
         </script>
     </body>
 </html>
