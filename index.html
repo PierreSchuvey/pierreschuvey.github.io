@@ -94,7 +94,7 @@
             }
 
             function startPeer(initiator){
-              navigator.getUserMedia({
+              navigator.mediaDevices.getUserMedia({
                 video:true,
                 audio:true
               }, function (stream){
