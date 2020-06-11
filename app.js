@@ -19,12 +19,20 @@ io.sockets.on('connection', function (socket, pseudo) {
     // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
     socket.on('message', function (message) {
         message = ent.encode(message);
+          console.log(message);
         socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
     });
-
-    socket.on('videoemitter', function (video) {
-        socket.broadcast.emit('videoemitter', {video: socket.video});
+    socket.on('cam', function (stream) {
+      socket.stream = stream;
+      socket.broadcast.emit('streaming', {stream: socket.stream});
     });
+
+socket.on('offer', function(offer){
+  socket.offer = offer;
+  socket.broadcast.emit('offer', {offer: offer});
+})
+
+
 });
 
 server.listen(process.env.PORT || 3000);
