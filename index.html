@@ -432,8 +432,7 @@ text-align: right;
 
 
 
-
-            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
+// On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
             var pseudo = prompt('Quel est votre pseudo ?');
             socket.emit('nouveau_client', pseudo);
             document.title = pseudo + ' - ' + document.title;
@@ -445,7 +444,7 @@ text-align: right;
 
             // Quand un nouveau client se connecte, on affiche l'information
             socket.on('nouveau_client', function(pseudo) {
-                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+                $('.chat-logs').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
             })
 
             // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
@@ -459,7 +458,11 @@ text-align: right;
 
             // Ajoute un message dans la page
             function insereMessage(pseudo, message) {
-                $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+              if(this.pseudo == pseudo){
+                $('.chat-logs').append('<div class="divMessageChatMe"><p class="messageChatMe"><strong>' + pseudo + '</strong> ' + message + '</p></div>');
+              }else{
+                $('.chat-logs').append('<div class="divMessageChatThere"><p class="messageChatThere"><strong>' + pseudo + '</strong> ' + message + '</p></div>');
+              }
             }
             
             
